@@ -1,0 +1,74 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool isvalid(int i, int j, vector<vector<int>> &A, int n, int m,vector<vector<int>> &visited)
+{
+       if(i>=0 && j>=0 && i<n && j<m && A[i][j]==1 && visited[i][j]==0) return true;
+       return false;
+   }
+int shortest_distance(int n,int m,vector<vector<int>>grid,int x,int y)
+{
+///if first element (0,0)!=1 then simply return -1.
+    if(grid[0][0]!=1)return -1;
+    ///make a vector that check element visited or not
+    vector<vector<int>>visited(n,vector<int>(m,0));///mark all as visited
+    ///make a queue in which we can push elements which satisfies the condition
+    queue<pair<int,int>>q;
+    ///first push({0,0})...element
+    q.push({0,0});
+    ///mark element visited
+    visited[0][0]=1;
+    ///take ans=0
+    int ans=0;
+    ///make directions...in 4 directions..up,down,left,right
+    int dx[]={0,0,1,-1};
+    int dy[]={1,-1,0,0};
+    ///now come in queue...only if queue is not empty
+    while(!q.empty())
+    {
+        int count=q.size();
+        for(int f=0;f<count;f++)
+        {
+            pair<int,int>p=q.front();
+            q.pop();
+             int i = p.first;
+                int j = p.second;
+               /// cout<<i<<" "<<j<<endl;
+                if(i==x && j==y) return ans;
+                for(int k=0;k<4;k++)
+                {
+                    int xx = i + dx[k];
+                    int yy = j + dy[k];
+                   /// cout<<xx<<" "<<yy<<endl;
+                    ///gives all direction
+                    if(isvalid(xx,yy,grid,n,m,visited))
+                    {
+                        q.push({xx,yy});
+                        ///cout<<xx<<" "<<yy<<endl;
+                        visited[xx][yy]=1;
+                    }
+                }
+
+        }
+        ans++;
+
+    }
+    return -1;
+}
+int main()
+{
+int t;
+cin>>t;
+while(t--)
+{
+int n,m;
+cin>>n>>m;
+vector<vector<int>>v(n,vector<int>(m));
+for(int i=0;i<n;i++)
+for(int j=0;j<m;j++)cin>>v[i][j];
+int x,y;
+cin>>x>>y;
+cout<<shortest_path(n,m,v,x,y);
+
+}
+}
